@@ -3,7 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <title>Climbing</title>
-    <style> canvas {width: 50%;height: 50%}</style>
+    <style>
+        body {
+        background-color: #000;
+        margin: 0;
+        overflow: hidden;
+         }
+        .label{
+            color: #FFF;
+            font-family: sans-serif;
+            padding: 2px;
+            background: rgba( 0, 0, 0, .6 );
+        }
+        .button{
+            background-color: burlywood;
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 50px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 15px;
+            position: relative;
+            left: 50%;
+            top:50%;
+
+        }
+        .button:hover{
+            background-color:grey;
+            color:greenyellow;
+        }
+        .button:active{
+            background-color:rebeccapurple;
+            box-shadow:0 5px #666;
+            transfor: translateY(4px);
+        }
+    </style>
     <script src="three.js"></script>
     <script src="js/WebGL.js"></script>
     <script src="js/loaders/TGALoader.js"></script>
@@ -14,6 +52,9 @@
     <script src="js/libs/ammo.js"></script>
     <script src="js/libs/stats.min.js"></script>
     <script src="ModelsMgr.js"></script>
+    <script src="js/renderers/CSS2DRenderer.js"></script>
+    <script src="List.js"></script>
+    <script src="CollisionCubeCtrl.js"></script>
 </head>
 <body>
     <div id="container"><br /><br /><br /><br /><br />Loading...</div>
@@ -38,32 +79,34 @@
 
         var transformAux1 = new Ammo.btTransform();
 
-        var time = 0;
         var timeCount=0;
         var physicsWorld;
         var rigidBodies = [];
         var margin = 0.05;
 
         //
-        var playerFbx,treeFbx;
+        var playerFbx;
         var Vspeed,Hspeed,previousMousePositionX,isMouseDown;
         var  playerState = {OnGround:0,NoGround:1};
         var currentState;
-        var durationTime = 0.9;
+        var durationTime = 1;
         var modelsMgr;
+        var playerBox;
+
+        //game status
+        var isGameStart = false;
+        var btnCSS2D;
+        var btnDiv,btnDivRestart;
 
         init();
         animate();
 
         function init() {
             initGraphics();
-
             //initPhysics();
-
             createObjects();
-
+            createUI();
             initInput();
-
 
             // // LIGHTS
             // var hemiLight = new THREE.HemisphereLight( 0xffffff, 0xffffff, 1 );
@@ -84,7 +127,6 @@
             // scene.add(dirLight);
             // scene.add( new THREE.DirectionalLightHelper(dirLight, 2.5) );
 
-
             //坐标轴辅助
             // var axes = new THREE.AxisHelper(5);
             // scene.add(axes);
@@ -99,9 +141,9 @@
             scene = new THREE.Scene();
             scene.background = new THREE.Color( 0xbfd1e5 );
 
-           // controls = new THREE.OrbitControls( camera );
-           ////controls.target.set( 0, 2, 0 );
-            //controls.update();
+           //controls = new THREE.OrbitControls( camera );
+           //controls.target.set( 0, 2, 0 );
+           // controls.update();
 
             renderer = new THREE.WebGLRenderer();
             renderer.setPixelRatio( window.devicePixelRatio );
@@ -167,20 +209,20 @@
             physicsWorld = new Ammo.btSoftRigidDynamicsWorld( dispatcher, broadphase, solver, collisionConfiguration, softBodySolver);
             physicsWorld.setGravity( new Ammo.btVector3( 0, gravityConstant, 0 ) );
             physicsWorld.getWorldInfo().set_m_gravity( new Ammo.btVector3( 0, gravityConstant, 0 ) );
-
         }
 
         function createObjects() {
-            material = new THREE.MeshNormalMaterial();
+            //material = new THREE.MeshNormalMaterial();
             material = new THREE.MeshToonMaterial();
 
             //Load fbx models
             var loader = new THREE.FBXLoader();
-            var meshPlayer = loader.load( 'ClimbModels/player.fbx', function ( object ) {
+            var meshPlayer = loader.load( 'ClimbModels/player.fbx', function ( object )
+            {
                 object.position.set(0,0.3,0);
                 object.rotation.z = THREE.Math.degToRad( 180 );
                 object.scale.multiplyScalar(0.1);
-                console.log(object.children[0].name);
+                //console.log(object.children[0].name);
                 playerFbx = object;
                 object.traverse( function ( child ) {
                     if ( child.isObject3D ) {
@@ -201,17 +243,23 @@
                                 break;
                         }
                         //child.material = material;
-
-                        console.log("player_name: " +child.name);
+                        //console.log("player_name: " +child.name);
                     }
-                },  (ev) => {
-                    console.log(ev);
-                }, (e) => {
-                    console.log(e);
                 });
-                console.log("pos:" + object.position.x);
+                console.log("pos:");
                 scene.add( object );
-            } );
+
+                playerBox = new THREE.Box3().setFromObject(object);
+
+                var helper = new THREE.Box3Helper(playerBox, 0xff0000);
+                helper.updateMatrixWorld(true);
+                scene.add(helper);
+
+            } , (ev) => {
+                console.log(ev);
+            }, (e) => {
+                console.log(e);
+            });
 
             currentState = playerState.OnGround;
 
@@ -219,79 +267,51 @@
             var quat = new THREE.Quaternion();
             pos.set(0,0,0);
 
-            // loader.load( 'ClimbModels/ground.fbx', function ( object ) {
-            //     object.position.set(0,0,0);
-            //
-            //     object.scale.multiplyScalar(0.1);
-            //     console.log(object.children[0].name + "  " + object.scale.x);
-            //
-            //     object.traverse( function ( child ) {
-            //         // if ( child.isObject3D ) {
-            //         //     child.castShadow = true;
-            //         //     child.receiveShadow = true;
-            //         //     child.material = material;
-            //         //     //console.log(child.position);
-            //         // }
-            //         if ( child.isObject3D )
-            //         {
-            //             var box = new THREE.Box3().setFromObject( child );
-            //
-            //             var helper = new THREE.Box3Helper( box, 0xffff00 );
-            //             scene.add( helper );
-            //
-            //             console.log( box.getSize() );
-            //             var groundShape = new Ammo.btBoxShape(box.getSize()*0.5);
-            //             //createRigidBody(child,groundShape,0,pos,quat);
-            //         }
-            //     },  (ev) => {
-            //         console.log(ev);
-            //     }, (e) => {
-            //         console.log(e);
-            //     });
-            //     console.log("pos:" + object.position.x);
-            //     scene.add( object );
-            // } );
-
-            //load Tree
-            // loader.load( 'ClimbModels/tree.fbx', function ( object ) {
-            //     object.position.set(0,0.3,0);
-            //
-            //     object.scale.multiplyScalar(0.1);
-            //     console.log(object.children[0].name + "  " + object.scale.x);
-            //     treeFbx = object;
-            //     object.traverse( function ( child ) {
-            //         // if ( child.isObject3D ) {
-            //         //     child.castShadow = true;
-            //         //     child.receiveShadow = true;
-            //         //     child.material = material;
-            //         //     //console.log(child.position);
-            //         // }
-            //         if ( child.isObject3D )
-            //         {
-            //             var box = new THREE.Box3().setFromObject( child );
-            //
-            //             console.log( box.getSize() );
-            //             var groundShape = new Ammo.btBoxShape(box.getSize()*0.5);
-            //             //createRigidBody(child,groundShape,0,pos,quat);
-            //
-            //             //child.material = new THREE.MeshBasicMaterial();
-            //         }
-            //     },  (ev) => {
-            //         console.log(ev);
-            //     }, (e) => {
-            //         console.log(e);
-            //     });
-            //     console.log("pos:" + object.position.x);
-            //     scene.add( object );
-            //
-            //     var cl = treeFbx.clone();
-            //     cl.position.set(2,0.3,0);
-            //     scene.add(cl);
-            // } );
-
             modelsMgr = new ModelsMgr();
             modelsMgr.LoadFbx();
+
         }
+        function createUI() {
+            btnDiv = document.createElement('div');
+            btnDiv.className ='button';
+            btnDiv.textContent ='开始';
+            btnDiv.onclick = function () {
+                console.log("开始游戏");
+                isGameStart = true;
+                btnDiv.style.display = "none";
+            }
+            btnCSS2D = new THREE.CSS2DObject(btnDiv);
+            btnCSS2D.position.set(0,0);
+            //scene.add(btnCSS2D);
+            container.appendChild(btnDiv);
+
+            btnDivRestart = document.createElement('div');
+            btnDivRestart.className ='button';
+            btnDivRestart.textContent ='重新开始';
+            btnDivRestart.style.display = "none";
+            btnDivRestart.onclick = function () {
+                console.log("重新开始");
+
+                btnDivRestart.style.display = "none";
+                modelsMgr.ClearModels();
+                playerFbx.position.set(0,0.3,0);
+                currentState = playerState.OnGround;
+                modelsMgr.LoadFbx();
+
+                isGameStart = true;
+            }
+            btnCSS2D = new THREE.CSS2DObject(btnDivRestart);
+            btnCSS2D.position.set(10,50);
+            //scene.add(btnCSS2D);
+            container.appendChild(btnDivRestart);
+        }
+        
+        function showRestartUI() {
+            btnDivRestart.style.display = "";
+            timeCount = 0;
+            durationTime = 1;
+        }
+
         function initInput() {
             Vspeed = 0.1;
             Hspeed = 0.05;
@@ -349,20 +369,19 @@
              stats.update();
         }
         function render() {
-
             var deltaTime = clock.getDelta();
 
             //updatePhysics( deltaTime );
-
             renderer.render( scene, camera );
 
-            time += deltaTime;
-            timeCount+=deltaTime;
-
-            PlayerUpDown(3,0.3);
-            modelsMgr.Update(deltaTime);
+            if(isGameStart)
+            {
+                timeCount+=deltaTime;
+                PlayerUpDown(3,0.3);
+                modelsMgr.Update(deltaTime);
+                if(durationTime>0.3) durationTime-=0.001;
+            }
         }
-
 
         function PlayerUpDown(topLimit,downLimit) {
             if(!playerFbx) return;
@@ -397,6 +416,7 @@
                 }
 
             }
+            playerBox.setFromObject(playerFbx);// show box of player
         }
         function interp(src,des,time) {
             return src +((des-src)*time);
@@ -458,7 +478,7 @@
             //console.log("length: "+modelsMgr.GroupList.length);
         }
         function OnMove(event) {
-            if(isMouseDown)
+            if(isMouseDown && isGameStart)
             {
                 var deltaX = event.offsetX - previousMousePositionX;
                 deltaX*=Hspeed;
@@ -466,6 +486,7 @@
                 var tempX = playerFbx.position.x + deltaX;
                 //playerFbx.position.x+=deltaX;.
                 playerFbx.position.x = THREE.Math.clamp(tempX,-3,3);
+
                 //console.log("p X:" + playerFbx.position.x);
             }
             //console.log("move");
@@ -485,7 +506,7 @@
         }
         function OnTouchMove(event) {
 
-            if(isMouseDown)
+            if(isMouseDown && isGameStart)
             {
                 event.preventDefault();
                 console.log("event.touches[0].pageX:" + event.touches[0].pageX);
@@ -493,7 +514,8 @@
                 var deltaX = event.touches[0].pageX - previousMousePositionX;
                 deltaX*=Hspeed;
                 console.log("Touch deltaX:" + deltaX);
-                playerFbx.position.x+=deltaX;
+                var tempX = playerFbx.position.x + deltaX;
+                playerFbx.position.x = THREE.Math.clamp(tempX,-3,3);
             }
             //console.log("move");
             //playerFbx.position.x+=0.1;
