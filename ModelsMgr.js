@@ -178,7 +178,7 @@ function ModelsMgr() {
 
     function addNewTree(group) {
         var treeNum = Math.floor(Math.random() * 3) + 2;
-        var treeArrayPos = RandomNumArray(treeNum,-2,2);
+        var treeArrayPos = RandomNumArray(treeNum,-3,4);
         //console.log(group.name + " treeNum: " + treeNum);
         //console.log(group.name + " treeArrayPos: " + treeArrayPos);
         for (var i = 0; i < treeNum; i++) {

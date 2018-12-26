@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="bc77c000-a3a2-468e-b913-7d83b5260648" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ModelsMgr.js" beforeDir="false" afterPath="$PROJECT_DIR$/ModelsMgr.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
     </list>
@@ -46,32 +45,33 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="html" value="4619" />
-          <entry key="js" value="3604" />
+          <entry key="html" value="4623" />
+          <entry key="js" value="3606" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="HTML" value="4619" />
-          <entry key="JavaScript" value="3604" />
+          <entry key="HTML" value="4623" />
+          <entry key="JavaScript" value="3606" />
         </counts>
       </usages-collector>
     </session>
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-284">
-              <caret line="282" column="53" lean-forward="true" selection-start-line="282" selection-start-column="53" selection-end-line="282" selection-end-column="53" />
+            <state relative-caret-position="425">
+              <caret line="26" column="28" lean-forward="true" selection-start-line="26" selection-start-column="28" selection-end-line="26" selection-end-column="28" />
               <folding>
-                <element signature="n#style#0;n#head#0;n#html#0;n#!!top" />
                 <element signature="e#120#209#0" />
                 <element signature="e#224#368#0" />
-                <element signature="e#384#819#0" />
                 <element signature="e#841#918#0" />
                 <element signature="e#941#1070#0" />
+                <element signature="e#4028#6263#0" />
+                <element signature="e#6296#7029#0" />
+                <element signature="e#7064#9391#0" />
               </folding>
             </state>
           </provider>
@@ -90,7 +90,7 @@
         <entry file="file://$PROJECT_DIR$/CollisionCubeCtrl.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="200">
-              <caret line="9" column="38" selection-start-line="9" selection-start-column="32" selection-end-line="9" selection-end-column="38" />
+              <caret line="9" column="39" selection-start-line="9" selection-start-column="39" selection-end-line="9" selection-end-column="39" />
             </state>
           </provider>
         </entry>
@@ -132,11 +132,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/ModelsMgr.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="298">
-              <caret line="162" column="51" lean-forward="true" selection-start-line="162" selection-start-column="51" selection-end-line="162" selection-end-column="51" />
+            <state relative-caret-position="323">
+              <caret line="181" column="59" lean-forward="true" selection-start-line="181" selection-start-column="59" selection-end-line="181" selection-end-column="59" />
               <folding>
                 <element signature="n#!!block;n#AddGround#0;n#!!block;n#ModelsMgr#0" />
                 <element signature="n#!!block;n#AddTree#0;n#!!block;n#ModelsMgr#0" />
@@ -216,8 +216,8 @@
         <option value="$PROJECT_DIR$/js/CollisionCubeCtrl.js" />
         <option value="$PROJECT_DIR$/CollisionCubeCtrl.js" />
         <option value="$PROJECT_DIR$/List.js" />
-        <option value="$PROJECT_DIR$/index.html" />
         <option value="$PROJECT_DIR$/ModelsMgr.js" />
+        <option value="$PROJECT_DIR$/index.html" />
       </list>
     </option>
   </component>
@@ -227,7 +227,7 @@
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
+  <component name="ProjectFrameBounds" extendedState="7">
     <option name="x" value="419" />
     <option name="y" value="-16" />
     <option name="width" value="1400" />
@@ -288,15 +288,15 @@
       <workItem from="1545356133660" duration="12350000" />
       <workItem from="1545616993590" duration="12862000" />
       <workItem from="1545703556782" duration="23824000" />
-      <workItem from="1545788856479" duration="2134000" />
+      <workItem from="1545788856479" duration="6401000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="128798000" />
+    <option name="totallyTimeSpent" value="133065000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="7" />
     <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.12434141" />
@@ -6117,35 +6117,36 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-284">
-          <caret line="282" column="53" lean-forward="true" selection-start-line="282" selection-start-column="53" selection-end-line="282" selection-end-column="53" />
-          <folding>
-            <element signature="n#style#0;n#head#0;n#html#0;n#!!top" />
-            <element signature="e#120#209#0" />
-            <element signature="e#224#368#0" />
-            <element signature="e#384#819#0" />
-            <element signature="e#841#918#0" />
-            <element signature="e#941#1070#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/CollisionCubeCtrl.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="200">
-          <caret line="9" column="38" selection-start-line="9" selection-start-column="32" selection-end-line="9" selection-end-column="38" />
+          <caret line="9" column="39" selection-start-line="9" selection-start-column="39" selection-end-line="9" selection-end-column="39" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/ModelsMgr.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="298">
-          <caret line="162" column="51" lean-forward="true" selection-start-line="162" selection-start-column="51" selection-end-line="162" selection-end-column="51" />
+        <state relative-caret-position="323">
+          <caret line="181" column="59" lean-forward="true" selection-start-line="181" selection-start-column="59" selection-end-line="181" selection-end-column="59" />
           <folding>
             <element signature="n#!!block;n#AddGround#0;n#!!block;n#ModelsMgr#0" />
             <element signature="n#!!block;n#AddTree#0;n#!!block;n#ModelsMgr#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="425">
+          <caret line="26" column="28" lean-forward="true" selection-start-line="26" selection-start-column="28" selection-end-line="26" selection-end-column="28" />
+          <folding>
+            <element signature="e#120#209#0" />
+            <element signature="e#224#368#0" />
+            <element signature="e#841#918#0" />
+            <element signature="e#941#1070#0" />
+            <element signature="e#4028#6263#0" />
+            <element signature="e#6296#7029#0" />
+            <element signature="e#7064#9391#0" />
           </folding>
         </state>
       </provider>
